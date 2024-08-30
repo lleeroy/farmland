@@ -8,7 +8,7 @@ pub struct Player {
     pub current_direction: PlayerDirection,
 }
 
-#[derive(Default)]
+#[derive(Default, Clone, Copy)]
 pub enum PlayerDirection {
     #[default]
     Down,

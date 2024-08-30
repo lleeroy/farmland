@@ -9,19 +9,19 @@ pub fn player_movement(
     for (mut player, mut transform) in &mut player_query {
         let mut direction = Vec3::ZERO;
 
-        if keyboard_input.pressed(KeyCode::ArrowLeft) {
+        if keyboard_input.pressed(KeyCode::ArrowLeft) || keyboard_input.pressed(KeyCode::KeyA) {
             direction += Vec3::new(-1.0, 0.0, 0.0);
             player.current_direction = PlayerDirection::Left;
         }
-        if keyboard_input.pressed(KeyCode::ArrowRight) {
+        if keyboard_input.pressed(KeyCode::ArrowRight) || keyboard_input.pressed(KeyCode::KeyD) {
             direction += Vec3::new(1.0, 0.0, 0.0);
             player.current_direction = PlayerDirection::Right;
         }
-        if keyboard_input.pressed(KeyCode::ArrowUp) {
+        if keyboard_input.pressed(KeyCode::ArrowUp) || keyboard_input.pressed(KeyCode::KeyW) {
             direction += Vec3::new(0.0, 1.0, 0.0);
             player.current_direction = PlayerDirection::Up;
         }
-        if keyboard_input.pressed(KeyCode::ArrowDown) {
+        if keyboard_input.pressed(KeyCode::ArrowDown) || keyboard_input.pressed(KeyCode::KeyS) {
             direction += Vec3::new(0.0, -1.0, 0.0);
             player.current_direction = PlayerDirection::Down;
         }
@@ -43,23 +43,16 @@ pub fn animate_movement(
         player.timer.tick(time.delta());
 
         if player.timer.just_finished() {
-            let animation_len = match player.current_direction {
-                PlayerDirection::Down => &indices.down.len(),
-                PlayerDirection::Up => &indices.up.len(),
-                PlayerDirection::Left => &indices.left.len(),
-                PlayerDirection::Right => &indices.right.len(),
-                PlayerDirection::Idle => &indices.idle.len(),
+            let direction_indices = match player.current_direction {
+                PlayerDirection::Down => indices.down.clone(),
+                PlayerDirection::Up => indices.up.clone(),
+                PlayerDirection::Left => indices.left.clone(),
+                PlayerDirection::Right => indices.right.clone(),
+                PlayerDirection::Idle => indices.idle.clone(),
             };
 
-            indices.current_index = (indices.current_index + 1) % animation_len;
-
-            atlas.index = match player.current_direction {
-                PlayerDirection::Down => indices.down[indices.current_index],
-                PlayerDirection::Up => indices.up[indices.current_index],
-                PlayerDirection::Left => indices.left[indices.current_index],
-                PlayerDirection::Right => indices.right[indices.current_index],
-                PlayerDirection::Idle => indices.idle[indices.current_index],
-            };
+            indices.current_index = (indices.current_index + 1) % direction_indices.len();
+            atlas.index = direction_indices[indices.current_index];
         }
     }
 }

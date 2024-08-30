@@ -1,8 +1,6 @@
-#![allow(unused)]
-
-use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
 use bevy_asset_loader::prelude::*;
+use bevy_ecs_ldtk::{LdtkPlugin, LevelSelection};
 use resources::assets::GameAssets;
 use resources::state::GameState;
 use systems::setup::{setup_camera, setup_player};
@@ -30,12 +28,12 @@ fn main() {
                     ..default()
                 }),
         )
+        .add_plugins(LdtkPlugin)
+        .insert_resource(LevelSelection::index(0))
         .insert_resource(ClearColor(Color::srgb_u8(
             BG_COLOR.0, BG_COLOR.1, BG_COLOR.2,
         )))
         .insert_resource(Msaa::Off)
-        .add_plugins(LogDiagnosticsPlugin::default())
-        .add_plugins(FrameTimeDiagnosticsPlugin)
         .init_state::<GameState>()
         .add_loading_state(
             LoadingState::new(GameState::AssetLoading)

@@ -3,9 +3,14 @@ use crate::{
     resources::assets::GameAssets,
 };
 use bevy::prelude::*;
+use bevy_ecs_ldtk::LdtkWorldBundle;
 
-pub fn setup_camera(mut commands: Commands) {
+pub fn setup_camera(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(Camera2dBundle::default());
+    commands.spawn(LdtkWorldBundle {
+        ldtk_handle: asset_server.load("map.ldtk"),
+        ..Default::default()
+    });
 }
 
 pub fn setup_player(mut commands: Commands, game_assets: Res<GameAssets>) {
