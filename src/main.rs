@@ -46,5 +46,16 @@ fn main() {
             OnEnter(GameState::Initializing),
             (setup_camera, setup_player),
         )
+        .add_loading_state(
+            LoadingState::new(GameState::Initializing).continue_to_state(GameState::Playing),
+        )
+        .add_systems(
+            Update,
+            (
+                systems::movement::player_movement,
+                systems::movement::animate_movement,
+            )
+                .run_if(in_state(GameState::Playing)),
+        )
         .run();
 }
