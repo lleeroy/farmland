@@ -1,5 +1,15 @@
 use bevy::prelude::*;
-const PLAYER_DEFAULT_SPEED: f32 = 200.0;
+use bevy_ecs_ldtk::prelude::*;
+const PLAYER_DEFAULT_SPEED: f32 = 100.0;
+
+#[derive(Default, Bundle, LdtkEntity)]
+pub struct PlayerBundle {
+    player: Player,
+    #[sprite_sheet_bundle]
+    sprite_bundle: LdtkSpriteSheetBundle,
+    #[grid_coords]
+    grid_coords: GridCoords,
+}
 
 #[derive(Component)]
 pub struct Player {

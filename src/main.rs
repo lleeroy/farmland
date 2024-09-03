@@ -1,9 +1,12 @@
 use bevy::prelude::*;
 use bevy_asset_loader::prelude::*;
-use bevy_ecs_ldtk::{LdtkPlugin, LevelSelection};
+use bevy_ecs_ldtk::prelude::*;
+
+use components::player::PlayerBundle;
 use resources::assets::GameAssets;
 use resources::state::GameState;
-use systems::setup::{setup_camera, setup_player};
+
+use systems::setup::*;
 
 mod components;
 mod resources;
@@ -29,6 +32,7 @@ fn main() {
                 }),
         )
         .add_plugins(LdtkPlugin)
+        .register_ldtk_entity::<PlayerBundle>("Player")
         .insert_resource(LevelSelection::index(0))
         .insert_resource(ClearColor(Color::srgb_u8(
             BG_COLOR.0, BG_COLOR.1, BG_COLOR.2,

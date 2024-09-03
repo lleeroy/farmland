@@ -1,9 +1,10 @@
+use bevy::prelude::*;
+use bevy_ecs_ldtk::LdtkWorldBundle;
+
 use crate::{
     components::player::{AnimationIndices, Player},
     resources::assets::GameAssets,
 };
-use bevy::prelude::*;
-use bevy_ecs_ldtk::LdtkWorldBundle;
 
 pub fn setup_camera(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(Camera2dBundle::default());
